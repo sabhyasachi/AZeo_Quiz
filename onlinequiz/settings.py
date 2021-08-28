@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'teacher',
     'student',
     'widget_tweaks',
+    'import_export',
+
 
 ]
 

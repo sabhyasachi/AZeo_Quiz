@@ -6,14 +6,27 @@
   <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <style>
+    #counter {
+      float: right;
+      height:10px;
+      line-height: 10px;
+      
+      
+      
+      color: red;
+
+    }
+  </style>
 
 
 </head>
 
 
 <div class="jumbotron my-4">
+  <p id='counter'>00:06</p>
 
-  <form class="form" autocomplete="off" onsubmit="return saveAns()"  action="/student/calculate-marks" method="POST">
+  <form class="form" id="yourForm" autocomplete="off" onsubmit="return saveAns()"  action="/student/calculate-marks" method="POST">
     {% csrf_token %}
     <h1 style="text-align: center;">{{course.course_name}}</h1>
     {% for q in questions%}
@@ -78,6 +91,31 @@
   var expires = "expires="+ d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
+const startingMinutes =0.1;
+let time = startingMinutes*60;
+const countdownEl = document.getElementById('counter');
+
+
+
+function updateCountdown(){
+  const minutes = Math.floor(time/60);
+  let seconds = time%60;
+
+  seconds = seconds < 10 ? '0' + seconds : seconds;
+
+  countdownEl.innerHTML = `${minutes}: ${seconds}`;
+  if((minutes==0)&&(seconds==0)) {
+    document.getElementById('yourForm').submit();
+  }
+  time--;
+  
+  
+
+}
+
+setInterval(updateCountdown,1000);
+
+
 
 </script> 
 
