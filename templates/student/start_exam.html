@@ -24,7 +24,7 @@
 
 
 <div class="jumbotron my-4">
-  <p id='counter'>00:06</p>
+  <p id='counter'></p>
 
   <form class="form" id="yourForm" autocomplete="off" onsubmit="return saveAns()"  action="/student/calculate-marks" method="POST">
     {% csrf_token %}
@@ -102,11 +102,12 @@ var seconds = parseInt(count_timer%60);
 function countDownTimer(){
  
   
-  document.getElementById("counter").innerHTML = "Time Left : "+minutes+" Minutes "+seconds+" Seconds";
+  document.getElementById("counter").innerHTML =  ""+minutes+":"+seconds+"";
   if(count_timer <= 0){
-    if((minutes==0)&&(seconds==0)) {
-      document.getElementById('yourForm').submit();
-    }
+   localStorage.clear("count_timer")
+   if((minutes==0)&&(seconds==0)) {
+    document.getElementById('yourForm').submit();
+  }
   } else {
       
       count_timer = count_timer -1 ;
@@ -118,7 +119,7 @@ function countDownTimer(){
 
   }
 }
-setTimeout("countDownTimer()",1000);
+setInterval("countDownTimer()",1000);
   
 
 
