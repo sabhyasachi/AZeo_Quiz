@@ -91,29 +91,39 @@
   var expires = "expires="+ d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
-const startingMinutes =0.1;
-let time = startingMinutes*60;
-const countdownEl = document.getElementById('counter');
 
-
-
-function updateCountdown(){
-  const minutes = Math.floor(time/60);
-  let seconds = time%60;
-
-  seconds = seconds < 10 ? '0' + seconds : seconds;
-
-  countdownEl.innerHTML = `${minutes}: ${seconds}`;
-  if((minutes==0)&&(seconds==0)) {
-    document.getElementById('yourForm').submit();
-  }
-  time--;
-  
-  
-
+if(localStorage.getItem("count_timer")){
+  var count_timer = localStorage.getItem("count_timer");
+} else {
+  var count_timer = 60*0.2;
 }
+var minutes = parseInt(count_timer/60);
+var seconds = parseInt(count_timer%60);
+function countDownTimer(){
+ 
+  
+  document.getElementById("counter").innerHTML = "Time Left : "+minutes+" Minutes "+seconds+" Seconds";
+  if(count_timer <= 0){
+    if((minutes==0)&&(seconds==0)) {
+      document.getElementById('yourForm').submit();
+    }
+  } else {
+      
+      count_timer = count_timer -1 ;
+      minutes = parseInt(count_timer/60);
+      seconds = parseInt(count_timer%60);
+      localStorage.setItem("count_timer",count_timer);
+      
+     
 
-setInterval(updateCountdown,1000);
+  }
+}
+setTimeout("countDownTimer()",1000);
+  
+
+
+
+
 
 
 
