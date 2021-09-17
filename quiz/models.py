@@ -1,4 +1,5 @@
 from django.db import models
+from ckeditor.fields import RichTextField
 
 from student.models import Student
 class Course(models.Model):
@@ -11,7 +12,8 @@ class Course(models.Model):
 class Question(models.Model):
     course=models.ForeignKey(Course,on_delete=models.CASCADE)
     marks=models.PositiveIntegerField()
-    question=models.CharField(max_length=600)
+    question = RichTextField(blank = True, null = True) 
+    # question=models.CharField(max_length=600)
     option1=models.CharField(max_length=200)
     option2=models.CharField(max_length=200)
     option3=models.CharField(max_length=200)

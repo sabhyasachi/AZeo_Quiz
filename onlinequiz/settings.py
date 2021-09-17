@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'student',
     'widget_tweaks',
     'import_export',
+    'ckeditor'
 
 
 ]
