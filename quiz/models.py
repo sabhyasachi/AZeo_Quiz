@@ -1,5 +1,6 @@
 from django.db import models
 from ckeditor.fields import RichTextField
+from django.contrib.auth.models import User
 
 from student.models import Student
 class Course(models.Model):
@@ -22,9 +23,10 @@ class Question(models.Model):
     answer=models.CharField(max_length=200,choices=cat)
 
 class Result(models.Model):
-    student = models.ForeignKey(Student,on_delete=models.CASCADE)
-    exam = models.ForeignKey(Course,on_delete=models.CASCADE)
+    student = models.ForeignKey(Student,to_field = 'user',on_delete=models.CASCADE)
+    
+    #exam = models.ForeignKey(Course,on_delete=models.CASCADE)
     marks = models.PositiveIntegerField()
-    attempt = models.PositiveIntegerField(default=1)
+    #attempt = models.PositiveIntegerField(default=1)
     date = models.DateTimeField(auto_now=True)
 
