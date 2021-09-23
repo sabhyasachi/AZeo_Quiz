@@ -8,23 +8,13 @@ from django.conf import settings
 from datetime import date, timedelta
 from quiz import models as QMODEL
 from teacher import models as TMODEL
-from django.http import HttpResponse
 
 
 #for showing signup/login button for student
-
-
-
-
-    
 def studentclick_view(request):
-    
-    if request.user.is_authenticated :
+    if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
-
-    
     return render(request,'student/studentclick.html')
-
 
 def student_signup_view(request):
     userForm=forms.StudentUserForm()
@@ -61,16 +51,12 @@ def student_dashboard_view(request):
 @login_required(login_url='studentlogin')
 @user_passes_test(is_student)
 def student_exam_view(request):
-    
-    
     courses=QMODEL.Course.objects.all()
     return render(request,'student/student_exam.html',{'courses':courses})
-    
 
 @login_required(login_url='studentlogin')
 @user_passes_test(is_student)
 def take_exam_view(request,pk):
-    
     course=QMODEL.Course.objects.get(id=pk)
     total_questions=QMODEL.Question.objects.all().filter(course=course).count()
     questions=QMODEL.Question.objects.all().filter(course=course)
@@ -78,8 +64,6 @@ def take_exam_view(request,pk):
     for q in questions:
         total_marks=total_marks + q.marks
     
-   
-        
     return render(request,'student/take_exam.html',{'course':course,'total_questions':total_questions,'total_marks':total_marks})
 
 @login_required(login_url='studentlogin')
@@ -87,21 +71,16 @@ def take_exam_view(request,pk):
 def start_exam_view(request,pk):
     course=QMODEL.Course.objects.get(id=pk)
     questions=QMODEL.Question.objects.all().filter(course=course)
-    
     if request.method=='POST':
-        
         pass
     response= render(request,'student/start_exam.html',{'course':course,'questions':questions})
     response.set_cookie('course_id',course.id)
     return response
 
 
-
-
 @login_required(login_url='studentlogin')
 @user_passes_test(is_student)
 def calculate_marks_view(request):
-    attempt = 1
     if request.COOKIES.get('course_id') is not None:
         course_id = request.COOKIES.get('course_id')
         course=QMODEL.Course.objects.get(id=course_id)
@@ -115,13 +94,16 @@ def calculate_marks_view(request):
             if selected_ans == actual_answer:
                 total_marks = total_marks + questions[i].marks
         student = models.Student.objects.get(user_id=request.user.id)
+        
         result = QMODEL.Result()
+        result.name = models.Student.objects.get(user_id=request.user.id).user.first_name + " " + models.Student.objects.get(user_id=request.user.id).user.last_name
+        result.mobile = models.Student.objects.get(user_id=request.user.id).mobile
+        result.email = models.Student.objects.get(user_id=request.user.id).email
+        result.college = models.Student.objects.get(user_id=request.user.id).college
         result.marks=total_marks
         result.exam=course
         result.student=student
-        result.attempt = attempt
         result.save()
-        attempt +=1
 
         return HttpResponseRedirect('view-result')
 
@@ -147,4 +129,3 @@ def check_marks_view(request,pk):
 def student_marks_view(request):
     courses=QMODEL.Course.objects.all()
     return render(request,'student/student_marks.html',{'courses':courses})
-  

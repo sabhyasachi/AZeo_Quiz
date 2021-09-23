@@ -293,4 +293,3 @@ def contactus_view(request):
             return render(request, 'quiz/contactussuccess.html')
     return render(request, 'quiz/contactus.html', {'form':sub})
 
-

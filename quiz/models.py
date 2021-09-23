@@ -1,8 +1,8 @@
 from django.db import models
-from ckeditor.fields import RichTextField
-from django.contrib.auth.models import User
 
 from student.models import Student
+# from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 class Course(models.Model):
    course_name = models.CharField(max_length=50)
    question_number = models.PositiveIntegerField()
@@ -13,20 +13,21 @@ class Course(models.Model):
 class Question(models.Model):
     course=models.ForeignKey(Course,on_delete=models.CASCADE)
     marks=models.PositiveIntegerField()
-    question = RichTextField(blank = True, null = True) 
-    # question=models.CharField(max_length=600)
-    option1=models.CharField(max_length=200)
-    option2=models.CharField(max_length=200)
-    option3=models.CharField(max_length=200)
-    option4=models.CharField(max_length=200)
+    question=RichTextUploadingField()
+    option1=RichTextUploadingField()
+    option2=RichTextUploadingField()
+    option3=RichTextUploadingField()
+    option4=RichTextUploadingField()
     cat=(('Option1','Option1'),('Option2','Option2'),('Option3','Option3'),('Option4','Option4'))
     answer=models.CharField(max_length=200,choices=cat)
 
 class Result(models.Model):
-    student = models.ForeignKey(Student,to_field = 'user',on_delete=models.CASCADE)
-    
-    #exam = models.ForeignKey(Course,on_delete=models.CASCADE)
+    student = models.ForeignKey(Student,on_delete=models.CASCADE)
+    exam = models.ForeignKey(Course,on_delete=models.CASCADE)
+    name = models.CharField(max_length=100,default='')
+    email = models.EmailField(default='')
+    college=models.CharField(max_length=100,default='')
+    mobile = models.CharField(max_length=20,null=False,default='')
     marks = models.PositiveIntegerField()
-    #attempt = models.PositiveIntegerField(default=1)
     date = models.DateTimeField(auto_now=True)
 

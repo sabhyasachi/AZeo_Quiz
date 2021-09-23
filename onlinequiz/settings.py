@@ -44,10 +44,13 @@ INSTALLED_APPS = [
     'student',
     'widget_tweaks',
     'import_export',
-    'ckeditor'
+    'ckeditor',
+    'ckeditor_uploader',
 
 
 ]
+
+CKEDITOR_UPLOAD_PATH = 'ckupload/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -129,9 +132,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR,'asset')
+
 STATICFILES_DIRS=[
 STATIC_DIR,
- ]
+  ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT  = os.path.join(BASE_DIR, 'media')
+
 
 LOGIN_REDIRECT_URL='/afterlogin'
 
